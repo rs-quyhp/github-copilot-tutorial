@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Factorial Calculator</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .container {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        max-width: 500px;
+        width: 100%;
+        text-align: center;
+      }
+
+      h1 {
+        color: #333;
+        margin-bottom: 30px;
+        font-size: 2.5em;
+        font-weight: 300;
+      }
+
+      .input-group {
+        margin-bottom: 30px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+        color: #555;
+        font-size: 1.1em;
+        font-weight: 500;
+      }
+
+      input[type='number'] {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #e1e5e9;
+        border-radius: 8px;
+        font-size: 1.2em;
+        text-align: center;
+        transition: all 0.3s ease;
+        outline: none;
+      }
+
+      input[type='number']:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 8px;
+        font-size: 1.1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-bottom: 20px;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      button:active {
+        transform: translateY(0);
+      }
+
+      .result-container {
+        margin-top: 30px;
+      }
+
+      .result {
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
+        display: none;
+        animation: slideIn 0.5s ease;
+      }
+
+      .result.show {
+        display: block;
+      }
+
+      .result.success {
+        background: #d4edda;
+        border-color: #c3e6cb;
+        color: #155724;
+      }
+
+      .result.error {
+        background: #f8d7da;
+        border-color: #f5c6cb;
+        color: #721c24;
+      }
+
+      .result-title {
+        font-size: 1.3em;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .result-value {
+        font-size: 1.8em;
+        font-weight: 700;
+        color: #667eea;
+        margin-top: 10px;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .info {
+        margin-top: 20px;
+        font-size: 0.9em;
+        color: #666;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🔢 Factorial Calculator</h1>
+
+      <div class="input-group">
+        <label for="numberInput"
+          >Enter a number to calculate its factorial:</label
+        >
+        <input
+          type="number"
+          id="numberInput"
+          min="0"
+          max="20"
+          placeholder="Enter a number (0-20)"
+        />
+      </div>
+
+      <button onclick="calculateFactorial()">Calculate Factorial</button>
+
+      <div class="result-container">
+        <div id="result" class="result">
+          <div class="result-title" id="resultTitle"></div>
+          <div id="resultText"></div>
+          <div class="result-value" id="resultValue"></div>
+        </div>
+      </div>
+
+      <div class="info">
+        💡 Tip: Factorials grow very quickly! Try numbers between 0 and 20 for
+        best results.
+      </div>
+    </div>
+
+    <script>
+      // Function that calculates the factorial of a number using recursion
+      function factorial(n) {
+        // Base case: if n is 0 or 1, return 1
+        if (n === 0 || n === 1) {
+          return 1;
+        }
+        // Recursive case: n * factorial of (n - 1)
+        return n * factorial(n - 1);
+      }
+
+      function calculateFactorial() {
+        const input = document.getElementById('numberInput');
+        const resultDiv = document.getElementById('result');
+        const resultTitle = document.getElementById('resultTitle');
+        const resultText = document.getElementById('resultText');
+        const resultValue = document.getElementById('resultValue');
+
+        const number = parseInt(input.value);
+
+        // Hide previous result
+        resultDiv.classList.remove('show', 'success', 'error');
+
+        // Validation
+        if (isNaN(number) || input.value === '') {
+          showError('Please enter a valid number!');
+          return;
+        }
+
+        if (number < 0) {
+          showError('Factorial is not defined for negative numbers!');
+          return;
+        }
+
+        if (number > 20) {
+          showError(
+            'Please enter a number between 0 and 20 to avoid overflow!'
+          );
+          return;
+        }
+
+        // Calculate factorial
+        try {
+          const result = factorial(number);
+          showSuccess(number, result);
+        } catch (error) {
+          showError('An error occurred while calculating the factorial.');
+        }
+      }
+
+      function showSuccess(number, result) {
+        const resultDiv = document.getElementById('result');
+        const resultTitle = document.getElementById('resultTitle');
+        const resultText = document.getElementById('resultText');
+        const resultValue = document.getElementById('resultValue');
+
+        resultTitle.textContent = '✅ Success!';
+        resultText.textContent = `The factorial of ${number} is:`;
+        resultValue.textContent = result.toLocaleString();
+
+        resultDiv.className = 'result show success';
+      }
+
+      function showError(message) {
+        const resultDiv = document.getElementById('result');
+        const resultTitle = document.getElementById('resultTitle');
+        const resultText = document.getElementById('resultText');
+        const resultValue = document.getElementById('resultValue');
+
+        resultTitle.textContent = '❌ Error!';
+        resultText.textContent = message;
+        resultValue.textContent = '';
+
+        resultDiv.className = 'result show error';
+      }
+
+      // Allow pressing Enter to calculate
+      document
+        .getElementById('numberInput')
+        .addEventListener('keypress', function (event) {
+          if (event.key === 'Enter') {
+            calculateFactorial();
+          }
+        });
+
+      // Focus on input when page loads
+      window.onload = function () {
+        document.getElementById('numberInput').focus();
+      };
+    </script>
+  </body>
+</html>
