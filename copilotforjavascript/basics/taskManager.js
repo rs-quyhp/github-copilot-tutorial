@@ -28,4 +28,11 @@ class TaskManager {
       this.tasks[index].done = true;
     }
   }
+
+  // remove task method
+  removeTask(index) {
+    if (index >= 0 && index < this.tasks.length) {
+      this.tasks.splice(index, 1);
+    }
+  }
 }
