@@ -7,3 +7,5 @@ function factorial(n) {
   // Recursive case: n * factorial of (n - 1)
   return n * factorial(n - 1);
 }
+
+module.exports = { factorial };

@@ -5,3 +5,5 @@ function isLeapYear(year) {
     return false;
   }
 }
+// ...existing code...
+module.exports = { isLeapYear };
