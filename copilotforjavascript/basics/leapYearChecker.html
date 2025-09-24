@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leap Year Checker</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        padding: 50px;
+        max-width: 600px;
+        width: 100%;
+        text-align: center;
+        position: relative;
+      }
+
+      h1 {
+        color: #2d3436;
+        margin-bottom: 20px;
+        font-size: 3em;
+        font-weight: 300;
+        background: linear-gradient(135deg, #74b9ff, #0984e3);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .subtitle {
+        color: #636e72;
+        margin-bottom: 40px;
+        font-size: 1.2em;
+        font-weight: 400;
+      }
+
+      .input-group {
+        margin-bottom: 40px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 15px;
+        color: #2d3436;
+        font-size: 1.3em;
+        font-weight: 500;
+      }
+
+      input[type='number'] {
+        width: 100%;
+        max-width: 300px;
+        padding: 20px;
+        border: 3px solid #ddd;
+        border-radius: 12px;
+        font-size: 1.4em;
+        text-align: center;
+        transition: all 0.3s ease;
+        outline: none;
+        background: #f8f9fa;
+      }
+
+      input[type='number']:focus {
+        border-color: #74b9ff;
+        box-shadow: 0 0 0 4px rgba(116, 185, 255, 0.2);
+        background: white;
+      }
+
+      button {
+        background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+        color: white;
+        border: none;
+        padding: 18px 50px;
+        border-radius: 12px;
+        font-size: 1.2em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 20px;
+        box-shadow: 0 8px 20px rgba(116, 185, 255, 0.3);
+      }
+
+      button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 30px rgba(116, 185, 255, 0.4);
+      }
+
+      button:active {
+        transform: translateY(-1px);
+      }
+
+      /* Modal/Popup Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(5px);
+      }
+
+      .modal-content {
+        background-color: white;
+        margin: 10% auto;
+        padding: 40px;
+        border-radius: 20px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+        position: relative;
+        animation: modalSlideIn 0.4s ease;
+        text-align: center;
+      }
+
+      @keyframes modalSlideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-50px) scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .close {
+        color: #636e72;
+        float: right;
+        font-size: 35px;
+        font-weight: bold;
+        cursor: pointer;
+        position: absolute;
+        right: 20px;
+        top: 15px;
+        transition: color 0.3s ease;
+      }
+
+      .close:hover {
+        color: #2d3436;
+      }
+
+      .modal-icon {
+        font-size: 4em;
+        margin-bottom: 20px;
+      }
+
+      .leap-year {
+        color: #00b894;
+      }
+
+      .not-leap-year {
+        color: #e17055;
+      }
+
+      .modal-title {
+        font-size: 2em;
+        font-weight: 600;
+        margin-bottom: 15px;
+      }
+
+      .modal-message {
+        font-size: 1.3em;
+        color: #636e72;
+        margin-bottom: 20px;
+        line-height: 1.6;
+      }
+
+      .modal-year {
+        font-size: 2.5em;
+        font-weight: 700;
+        margin: 20px 0;
+        background: linear-gradient(135deg, #74b9ff, #0984e3);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .modal-explanation {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+        font-size: 1em;
+        color: #636e72;
+        line-height: 1.5;
+      }
+
+      .info-box {
+        background: linear-gradient(135deg, #e8f4fd, #d1ecf1);
+        border: 1px solid #bee5eb;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 30px;
+        color: #0c5460;
+      }
+
+      .info-title {
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-size: 1.1em;
+      }
+
+      .info-text {
+        font-size: 0.95em;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>📅 Leap Year Checker</h1>
+      <p class="subtitle">Discover if any year is a leap year!</p>
+
+      <div class="input-group">
+        <label for="yearInput">Enter a year:</label>
+        <input
+          type="number"
+          id="yearInput"
+          min="1"
+          max="9999"
+          placeholder="e.g., 2024"
+        />
+      </div>
+
+      <button onclick="checkLeapYear()">Check Leap Year</button>
+
+      <div class="info-box">
+        <div class="info-title">📖 What is a Leap Year?</div>
+        <div class="info-text">
+          A leap year occurs every 4 years and has 366 days instead of 365. The
+          extra day is added to February, making it 29 days long!
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for displaying results -->
+    <div id="resultModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-icon" id="modalIcon"></div>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <div class="modal-year" id="modalYear"></div>
+        <p class="modal-message" id="modalMessage"></p>
+        <div class="modal-explanation" id="modalExplanation"></div>
+      </div>
+    </div>
+
+    <script>
+      function isLeapYear(year) {
+        if (year % 4 === 0) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+
+      function checkLeapYear() {
+        const input = document.getElementById('yearInput');
+        const year = parseInt(input.value);
+
+        // Validation
+        if (isNaN(year) || input.value === '') {
+          showErrorPopup('Please enter a valid year!');
+          return;
+        }
+
+        if (year < 1) {
+          showErrorPopup('Please enter a year greater than 0!');
+          return;
+        }
+
+        if (year > 9999) {
+          showErrorPopup('Please enter a year less than 10000!');
+          return;
+        }
+
+        // Check if it's a leap year
+        const isLeap = isLeapYear(year);
+        showResultPopup(year, isLeap);
+      }
+
+      function showResultPopup(year, isLeap) {
+        const modal = document.getElementById('resultModal');
+        const modalIcon = document.getElementById('modalIcon');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalYear = document.getElementById('modalYear');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalExplanation = document.getElementById('modalExplanation');
+
+        modalYear.textContent = year;
+
+        if (isLeap) {
+          modalIcon.textContent = '🎉';
+          modalIcon.className = 'modal-icon leap-year';
+          modalTitle.textContent = "Yes! It's a Leap Year!";
+          modalTitle.className = 'modal-title leap-year';
+          modalMessage.textContent = `${year} is a leap year with 366 days.`;
+          modalExplanation.innerHTML = `
+                    <strong>Why is ${year} a leap year?</strong><br>
+                    Since ${year} is divisible by 4, it qualifies as a leap year. 
+                    This means February will have 29 days instead of the usual 28 days.
+                `;
+        } else {
+          modalIcon.textContent = '📅';
+          modalIcon.className = 'modal-icon not-leap-year';
+          modalTitle.textContent = 'Not a Leap Year';
+          modalTitle.className = 'modal-title not-leap-year';
+          modalMessage.textContent = `${year} is a regular year with 365 days.`;
+          modalExplanation.innerHTML = `
+                    <strong>Why is ${year} not a leap year?</strong><br>
+                    Since ${year} is not divisible by 4, it's a regular year. 
+                    February will have the standard 28 days.
+                `;
+        }
+
+        modal.style.display = 'block';
+      }
+
+      function showErrorPopup(message) {
+        const modal = document.getElementById('resultModal');
+        const modalIcon = document.getElementById('modalIcon');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalYear = document.getElementById('modalYear');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalExplanation = document.getElementById('modalExplanation');
+
+        modalIcon.textContent = '❌';
+        modalIcon.className = 'modal-icon not-leap-year';
+        modalTitle.textContent = 'Invalid Input';
+        modalTitle.className = 'modal-title not-leap-year';
+        modalYear.textContent = '';
+        modalMessage.textContent = message;
+        modalExplanation.textContent = 'Please try again with a valid year.';
+
+        modal.style.display = 'block';
+      }
+
+      function closeModal() {
+        const modal = document.getElementById('resultModal');
+        modal.style.display = 'none';
+      }
+
+      // Close modal when clicking outside
+      window.onclick = function (event) {
+        const modal = document.getElementById('resultModal');
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      };
+
+      // Allow pressing Enter to check
+      document
+        .getElementById('yearInput')
+        .addEventListener('keypress', function (event) {
+          if (event.key === 'Enter') {
+            checkLeapYear();
+          }
+        });
+
+      // Close modal with Escape key
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+          closeModal();
+        }
+      });
+
+      // Focus on input when page loads
+      window.onload = function () {
+        document.getElementById('yearInput').focus();
+      };
+    </script>
+  </body>
+</html>
