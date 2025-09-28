@@ -4,7 +4,7 @@ const clinicalRoutes = require("./routes/clinicalRoutes");
 const patientRoutes = require("./routes/patientRoutes");
 const db = require("./db/database");
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 const http = require("http");
 
 db.connectDB();
