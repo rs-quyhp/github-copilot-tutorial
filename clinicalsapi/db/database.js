@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
-const mongoURI = "mongodb://localhost:27017/clinicalsdb"; // Change as needed
+const mongoURI =
+  "mongodb+srv://quyhp:ShikamaruBH71@cluster0.4pjpg.mongodb.net/githubcopilot"; // Change as needed
 
 mongoose.connect(mongoURI, {
   useNewUrlParser: true,
