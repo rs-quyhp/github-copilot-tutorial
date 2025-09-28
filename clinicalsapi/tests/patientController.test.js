@@ -1,15 +1,18 @@
 const request = require("supertest");
-const express = require("express");
+const { app, close } = require("../app");
+const { closeDB } = require("../db/database");
 
 jest.mock("../daos/patientDao");
 const patientDao = require("../daos/patientDao");
 
-const app = express();
-app.use(express.json());
-
 describe("Patient API", () => {
   afterEach(() => {
     jest.clearAllMocks();
+  });
+
+  afterAll(async () => {
+    close();
+    await closeDB();
   });
 
   it("should create a new patient", async () => {
