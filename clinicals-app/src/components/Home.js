@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { FaNotesMedical, FaUserPlus } from "react-icons/fa";
+import { FaNotesMedical, FaTrash, FaUserPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import "./Home.css";
-
 function Home() {
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,6 +25,18 @@ function Home() {
 
   if (loading) return <div>Loading patient details...</div>;
   if (error) return <div>{error}</div>;
+
+  const handleDeletePatient = async (patientId) => {
+    if (!window.confirm("Are you sure you want to delete this patient?"))
+      return;
+    try {
+      await axios.delete(`http://localhost:8000/api/patients/${patientId}`);
+      setPatients((prev) => prev.filter((p) => p._id !== patientId));
+      toast.success("Patient deleted successfully!");
+    } catch (err) {
+      setError("Failed to delete patient.");
+    }
+  };
 
   return (
     <div className="patient-table-container">
@@ -54,16 +66,25 @@ function Home() {
               <td>{patient.firstName}</td>
               <td>{patient.lastName}</td>
               <td>{patient.age}</td>
-              {/* Add more fields as needed */}
               <td>
-                <button
-                  className="add-clinical-btn"
-                  onClick={() => navigate(`/add-clinical/${patient._id}`)}
-                  title="Add Clinical"
-                >
-                  <FaNotesMedical style={{ marginRight: 6 }} />
-                  Add Clinical
-                </button>
+                <div className="action-buttons">
+                  <button
+                    className="add-clinical-btn"
+                    onClick={() => navigate(`/add-clinical/${patient._id}`)}
+                    title="Add Clinical"
+                  >
+                    <FaNotesMedical style={{ marginRight: 6 }} />
+                    Add Clinical
+                  </button>
+                  <button
+                    className="delete-patient-btn"
+                    onClick={() => handleDeletePatient(patient._id)}
+                    title="Delete Patient"
+                    style={{ marginLeft: 8 }}
+                  >
+                    <FaTrash color="#e74c3c" size={18} />
+                  </button>
+                </div>
               </td>
             </tr>
           ))}
