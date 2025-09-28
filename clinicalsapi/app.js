@@ -1,10 +1,12 @@
 const express = require("express");
+const cors = require("cors");
 const clinicalRoutes = require("./routes/clinicalRoutes");
 const patientRoutes = require("./routes/patientRoutes");
 const connectDB = require("./db/database");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(express.json());
 
 // Mount API routes
