@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import "./AddPatient.css";
 
 function AddPatient() {
@@ -19,6 +20,7 @@ function AddPatient() {
     setError("");
     try {
       await axios.post("http://localhost:8000/api/patients", form);
+      toast.success("New patient added");
       navigate("/");
     } catch (err) {
       setError("Failed to add patient.");

@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import "./App.css";
 import AddClinical from "./components/AddClinical";
 import AddPatient from "./components/AddPatient";
@@ -17,6 +18,7 @@ function App() {
           ></Route>
         </Routes>
       </BrowserRouter>
+      <ToastContainer position="top-center" />
     </div>
   );
 }
