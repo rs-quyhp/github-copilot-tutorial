@@ -62,3 +62,20 @@
 .add-patient-btn:hover {
   background: #217dbb;
 }
+.add-clinical-btn {
+  background: #27ae60;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.add-clinical-btn:hover {
+  background: #219150;
+}

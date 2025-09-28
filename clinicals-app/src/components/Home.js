@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { FaUserPlus } from "react-icons/fa";
+import { FaNotesMedical, FaUserPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
+
 function Home() {
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -49,11 +50,21 @@ function Home() {
         </thead>
         <tbody>
           {patients.map((patient) => (
-            <tr key={patient.id}>
+            <tr key={patient._id}>
               <td>{patient.firstName}</td>
               <td>{patient.lastName}</td>
               <td>{patient.age}</td>
               {/* Add more fields as needed */}
+              <td>
+                <button
+                  className="add-clinical-btn"
+                  onClick={() => navigate(`/add-clinical/${patient._id}`)}
+                  title="Add Clinical"
+                >
+                  <FaNotesMedical style={{ marginRight: 6 }} />
+                  Add Clinical
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
