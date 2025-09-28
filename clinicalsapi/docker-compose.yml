@@ -1,0 +1,22 @@
+services:
+  mongo:
+    image: mongo
+    container_name: clinicalsapi-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
+
+  api:
+    build: .
+    container_name: clinicalsapi-api
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=mongodb://mongo:27017/clinicalsdb
+    depends_on:
+      - mongo
+    command: ["node", "app.js"]

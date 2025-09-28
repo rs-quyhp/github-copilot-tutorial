@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
-const mongoURI =
-  "mongodb+srv://quyhp:ShikamaruBH71@cluster0.4pjpg.mongodb.net/githubcopilot"; // Change as needed
+const mongoURI = process.env.MONGO_URI; // Change as needed
 
 let isConnected = false;
 
