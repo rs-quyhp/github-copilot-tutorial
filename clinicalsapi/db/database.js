@@ -3,10 +3,17 @@ const mongoose = require("mongoose");
 const mongoURI =
   "mongodb+srv://quyhp:ShikamaruBH71@cluster0.4pjpg.mongodb.net/githubcopilot"; // Change as needed
 
-mongoose.connect(mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+let isConnected = false;
+
+async function connectDB() {
+  if (!isConnected) {
+    await mongoose.connect(mongoURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    isConnected = true;
+  }
+}
 
 const db = mongoose.connection;
 
@@ -15,4 +22,13 @@ db.once("open", () => {
   console.log("Connected to MongoDB");
 });
 
-module.exports = db;
+function closeDB() {
+  isConnected = false;
+  return mongoose.connection.close();
+}
+
+module.exports = {
+  db,
+  connectDB,
+  closeDB,
+};

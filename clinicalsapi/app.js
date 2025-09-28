@@ -2,10 +2,12 @@ const express = require("express");
 const cors = require("cors");
 const clinicalRoutes = require("./routes/clinicalRoutes");
 const patientRoutes = require("./routes/patientRoutes");
-require("./db/database");
+const db = require("./db/database");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const http = require("http");
+
+db.connectDB();
 
 app.use(cors());
 app.use(express.json());
