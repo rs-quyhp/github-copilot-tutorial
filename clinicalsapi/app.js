@@ -2,9 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const clinicalRoutes = require("./routes/clinicalRoutes");
 const patientRoutes = require("./routes/patientRoutes");
-const connectDB = require("./db/database");
+require("./db/database");
 const app = express();
 const PORT = process.env.PORT || 3000;
+const http = require("http");
 
 app.use(cors());
 app.use(express.json());
@@ -13,12 +14,11 @@ app.use(express.json());
 app.use("/api/clinicals", clinicalRoutes);
 app.use("/api/patients", patientRoutes);
 
-// Root endpoint
-app.get("/", (req, res) => {
-  res.send("API is running");
-});
+const server = http.createServer(app);
 
 // Start the server
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+module.exports = { app, close: () => server.close() };
