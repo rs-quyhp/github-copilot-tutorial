@@ -1,7 +1,7 @@
 const express = require("express");
 const clinicalRoutes = require("./routes/clinicalRoutes");
 const patientRoutes = require("./routes/patientRoutes");
-
+const connectDB = require("./db/database");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
